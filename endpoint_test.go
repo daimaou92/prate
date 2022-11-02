@@ -1,4 +1,4 @@
-package gate
+package prate
 
 import (
 	"bytes"
@@ -12,7 +12,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	"github.com/daimaou92/gate/pb/fortest"
+	"github.com/daimaou92/prate/pb/fortest"
 	"github.com/julienschmidt/httprouter"
 )
 
