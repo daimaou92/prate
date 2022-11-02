@@ -1,0 +1,14 @@
+syntax = "proto3";
+package fortest;
+
+option go_package="./fortest";
+
+message TestReq {
+    string key = 1;
+    string value = 2;
+}
+
+message TestRes {
+    string key = 1;
+    string value = 2;
+}
