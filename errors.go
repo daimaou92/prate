@@ -4,8 +4,6 @@ import (
 	"strings"
 )
 
-// type GateErr error
-
 type Error struct {
 	Code    int
 	Message []string
