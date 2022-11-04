@@ -47,7 +47,7 @@ type AppOptions struct {
 
 func (ao AppOptions) server() *http.Server {
 	server := http.Server{
-		Addr: ":6666",
+		Addr: ":0",
 	}
 	if ao.Addr != "" {
 		server.Addr = ao.Addr
@@ -349,31 +349,21 @@ func (app *App) SetGlobalOptionsHandler(h Handler) {
 	})
 }
 
-// Listen can be called instead of the inherited
-// ListenAndServe. If the TLSConfig attribute exists
-// Listen will attempt to start the server secured with TLS.
-// One can call the inherited ListenAndServeTLS directly too
-// instead of providing a tls.Config
+// Starts the server
 func (app *App) Start() error {
 	if app == nil || app.router == nil {
 		return wrapErr(fmt.Errorf("app not initialized"))
 	}
 
 	app.mountEndpoints()
-	if app.TLSConfig != nil {
-		conn, err := net.Listen("tcp", app.Addr)
-		if err != nil {
-			return wrapErr(err)
-		}
-
-		tlsListener := tls.NewListener(conn, app.TLSConfig)
-		if err := app.Serve(tlsListener); err != nil {
-			return wrapErr(err)
-		}
-	} else {
-		if err := app.ListenAndServe(); err != nil {
-			return wrapErr(err)
-		}
+	conn, err := net.Listen("tcp", app.Addr)
+	if err != nil {
+		return wrapErr(err)
+	}
+	tlsListener := tls.NewListener(conn, app.TLSConfig)
+	log.Println("Listening at: ", tlsListener.Addr())
+	if err := app.Serve(tlsListener); err != nil {
+		return wrapErr(err)
 	}
 	return nil
 }
